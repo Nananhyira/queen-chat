@@ -12,11 +12,15 @@ const Message = ({ message }) => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
 
+  if (!message) return null;
+
+  const isOwner = currentUser?.uid && message.senderId === currentUser.uid;
+
   return (
-    <div ref={ref} className={`message ${message.senderId === currentUser.uid && "owner"}`}>
+    <div ref={ref} className={`message ${isOwner && "owner"}`}>
       <div className="messageInfo">
         <img
-          src={message.senderId === currentUser.uid ? currentUser.photoURL : data.user.photoURL}
+          src={isOwner ? currentUser?.photoURL || "" : data?.user?.photoURL || ""}
           alt="user avatar"
         />
         <span>just now</span>
