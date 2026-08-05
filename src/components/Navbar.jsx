@@ -1,16 +1,40 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
+import { useNavigate, Link } from "react-router-dom";
 
 function Navbar() {
+	const { currentUser } = useContext(AuthContext);
+	const navigate = useNavigate();
+
+	const handleLogout = async () => {
+		try {
+			await signOut(auth);
+			navigate("/login");
+		} catch (err) {
+			console.error("Logout failed", err);
+		}
+	};
+
 	return (
 		<div className="navbar">
-			<span className="logo">Queens Chat </span>
+			<span className="logo">Queens Chat</span>
 			<div className="user">
-				<img
-					src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOk-oWD03Zl6Jn4lkk1gFhZv5ckdi9dG4zNA&usqp=CAU"
-					alt=""
-				/>
-				<span>John</span>
-				<button>Logout</button>
+				{currentUser ? (
+					<>
+						<Link to="/profile">
+							<img src={currentUser.photoURL || "/img/addAvatar.png"} alt={currentUser.displayName || currentUser.email} />
+						</Link>
+						<span>{currentUser.displayName || currentUser.email}</span>
+						<button onClick={handleLogout}>Logout</button>
+					</>
+				) : (
+					<>
+						<img src="/img/addAvatar.png" alt="guest" />
+						<span>Guest</span>
+					</>
+				)}
 			</div>
 		</div>
 	);

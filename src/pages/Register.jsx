@@ -45,6 +45,7 @@ function Register() {
       await setDoc(doc(db, "users", res.user.uid), {
         uid: res.user.uid,
         displayName,
+        searchName: displayName.toLowerCase(),
         email,
         photoURL: downloadURL,
       });
