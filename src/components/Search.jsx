@@ -55,14 +55,16 @@ function Search() {
 					onChange={(e) => setSearchTerm(e.target.value)}
 					onKeyDown={handleKeyDown}
 				/>
-				<button onClick={handleSearch}>Search</button>
+				<button type="button" onClick={handleSearch}>
+					Search
+				</button>
 			</div>
 
 			<div className="searchResults">
 				{results.length === 0 && searchTerm && <div className="empty">No users found.</div>}
 				{results.map((user) => (
 					<div className="userChat" key={user.uid} onClick={() => handleSelect(user)}>
-					<img src={user.photoURL || "/img/addAvatar.png"} alt="avatar" />
+						<img src={user.photoURL || "/img/addAvatar.png"} alt="avatar" />
 						<div className="userChatInfo">
 							<span>{user.displayName}</span>
 						</div>
